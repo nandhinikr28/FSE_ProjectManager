@@ -1,145 +1,233 @@
 const express = require('express');
 const router = express.Router();
 
-const Project = require('../models/projects');
-const Task = require('../models/tasks');
+var bodyparser= require('body-parser');
+
+const Task = require('../models/tasks'); 
 const User = require('../models/users');
+const Project = require('../models/projects');
+var mongoose = require('mongoose');
 
-//retrieve projects
-router.get('/projects',(req,res, next)=>{
-    Project.find(function(err, projects){
-        res.json(projects);
-    })    
-    //res.send('retrieving the project list');
+
+router.use(bodyparser.json( {type: "*/*"}));
+router.use(bodyparser.urlencoded());
+var app = express();
+
+router.get('/projects',(req, res, next)=>{
+    console.log("Retrieving projects");
+    Project.find(function(err, project){
+        res.json(project);
+    });
 });
 
-//add projects
-router.post('/projects',(req,res,next)=>{
+router.get('/projects/:_id', function(req,res,next){
+    console.log("into find")
+    Project.findById(req.params._id)
+    .then(doc=>{
+        if(!doc){ return res.status(404).end();}
+    return res.status(200).json(doc);
+    })
+    .catch(err => next(err));
+});
+
+router.get('/tasks',(req, res, next)=>{
+    console.log("Retrieving tasks");
+    Task.find(function(err, task){
+        res.json(task);
+    });
+});
+
+router.get('/users',(req, res, next)=>{
+    console.log("Retrieving user");
+    User.find(function(err, user){
+        res.json(user);
+    });
+});
+
+
+router.get('/users/:_id', function(req,res,next){
+    console.log("into find user")
+    User.findById(req.params._id)
+    .then(doc=>{
+        if(!doc){ return res.status(404).end();}
+    return res.status(200).json(doc);
+    })
+    .catch(err => next(err));
+});
+
+
+router.post('/projects',(req, res, next)=>{
+    
+    console.log("inside adding project");
     let project = req.body;
+
     console.log(project);
-
-    //logic to add projects
     var model = new Project(project);
+    console.log("testing project")
     model.save(function(err){
         if(err){
             res.send("error"+err);
             return next(err);
         }
-        res.send("Project added");
-    })
+        res.send("project created");
+    });
 });
 
-//delete project based on id
-router.delete('/projects/:id',(req,res,next)=>{
-    //logic to delete projects
-    console.log("Deleting Project");
-    Project.remove({id: req.params.id}, function (err, result){
-        if(err){
-            res.json(err);
-        }
-        else{
-            res.json(result);
-        }
-    })
-});
-
-//update projects
+//Update 
 router.put('/projects/:id', function(req,res,next){
-    console.log("updating value"+req.params.id);
-    Task.findByIdAndUpdate(req.params.id, req.body, function(err,post){
+    console.log("updating projects value"+req.params.id);
+    Project.findByIdAndUpdate(req.params.id, req.body, function(err,post){
         if(err) return next(err);
         res.json(post);
     });
 });
 
-//retrieve task
-router.get('/tasks',(req,res,next)=>{
-    Task.find(function(err, tasks){
-        res.json(tasks);
-    })    
+router.get('/tasks/:_id', function(req,res,next){
+    console.log("into find task")
+    Task.findById(req.params._id)
+    .then(doc=>{
+        if(!doc){ return res.status(404).end();}
+    return res.status(200).json(doc);
+    })
+    .catch(err => next(err));
 });
 
-//add tasks
-router.post('/tasks',(req,res,next)=>{
+router.post('/tasks',(req, res, next)=>{
+    
+    console.log("inside adding task");
     let task = req.body;
+
     console.log(task);
-
-    //logic to add tasks
     var model = new Task(task);
+    //let project = req.body;
+    
+       // console.log(project);
+        
+    //var model2 = new Project(project);
+    console.log("testing -- "+ req.body.Project_Name);
     model.save(function(err){
-        if(err){
+        console.log('task _id' + model._id);
+        //Project.find({}).
+        //populate(Task_IDS)
+        //.exec(function(err, doc){
+             //Task.populate(doc.Task_ID, {path: '_id'}, function (err, doc) {
+    
+             //})
+         //})
+        
+       
+         if(err){
             res.send("error"+err);
             return next(err);
         }
-        res.send("Task added");
-    })
-});
-
-//delete tasks based on id
-router.delete('/tasks/:id',(req,res,next)=>{
-    //logic to delete tasks
-    console.log("Deleting Task");
-    Task.remove({id: req.params.id}, function (err, result){
-        if(err){
-            res.json(err);
-        }
-        else{
-            res.json(result);
-        }
-    })
-});
-
-//update tasks
-router.put('/tasks/:id', function(req,res,next){
-    console.log("updating value"+req.params.id);
-    Task.findByIdAndUpdate(req.params.id, req.body, function(err,post){
-        if(err) return next(err);
-        res.json(post);
+        res.send("task created");
     });
 });
 
-
-//retrieve user
-router.get('/users',(req,res,next)=>{
-    User.find(function(err,users){
-        res.json(users);
-    })
-})
-
-//add user
-router.post('/users',(req,res,next)=>{
+router.post('/users',(req, res, next)=>{
+    
+    console.log("inside adding user");
     let user = req.body;
-    console.log(user);
 
+    console.log(user);
     var model = new User(user);
+    console.log("testing user")
     model.save(function(err){
         if(err){
             res.send("error"+err);
             return next(err);
         }
-        res.send("User added");
+        res.send("user created");
     });
 });
 
-//delete user based on id
-router.delete('/users/:id',(req,res,next)=>{
-    console.log("Deleting user");
-    User.remove({id: req.params.id}, function (err, result){
-        if(err){
+router.put('/tasks/:id', function(req,res,next){
+    console.log("updating task value"+req.params.id);
+    Task.findByIdAndUpdate(req.params.id, req.body, function(err,post){
+        if(err) return next(err);
+        res.json(post);
+    });
+});
+
+router.post('/projects/:id',(req, res, next)=>{
+    console.log("Deleting projects");
+    Project.remove({_id: req.params.id}, function(err, result){
+        if(err)
+        {
             res.json(err);
         }
         else{
+            res.json(result);
+            console.log("Project deleted");
+        }
+    });
+});
+
+router.post('/tasks/:id',(req, res, next)=>{
+    console.log("Deleting tasks");
+    Task.remove({_id: req.params.id}, function(err, result){
+        if(err)
+        {
+            res.json(err);
+        }
+        else{
+            res.json(result);
+            console.log("Task deleted");
+        }
+    });
+});
+
+router.post('/users/:id',(req, res, next)=>{
+    console.log("Deleting user");
+    User.remove({_id: req.params.id}, function(err, result){
+        if(err)
+        {
+            res.json(err);
+        }
+        else{
+            res.json(result);
+            console.log("User deleted");
+        }
+    });
+});
+//Update user
+router.put('/users/:id', function(req,res,next){
+    console.log("updating user value"+req.params.id);
+    User.findByIdAndUpdate(req.params.id, req.body, function(err,post){
+        if(err) return next(err);
+        res.json(post);
+    });
+});
+
+//Delete Project
+
+router.delete('/projects/:id',(req,res,next)=>{
+    //logic to delete tasks
+    console.log("deleting project ");
+    Project.remove({_id: req.params.id}, function(err,result){
+        if(err)
+        {
+            res.json(err);
+        }
+        else
+        {
             res.json(result);
         }
     });
 });
 
-//update user
-router.put('/users/:id', function(req,res,next){
-    console.log("updating value"+req.params.id);
-    Task.findByIdAndUpdate(req.params.id, req.body, function(err,post){
-        if(err) return next(err);
-        res.json(post);
+router.delete('/tasks/:id',(req,res,next)=>{
+    //logic to delete user
+    console.log("deleting task ");
+    Task.remove({_id: req.params.id}, function(err,result){
+        if(err)
+        {
+            res.json(err);
+        }
+        else
+        {
+            res.json(result);
+        }
     });
 });
 

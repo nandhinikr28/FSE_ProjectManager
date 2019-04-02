@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Project } from '../../models/project';
 import { ProjectSummary } from '../../models/projectsummary';
 import { User } from '../../models/user';
+import {HttpModule} from '@angular/http'
 import { TaskServiceService } from '../../Services/Task/task-service.service'
 declare var $: any;
 

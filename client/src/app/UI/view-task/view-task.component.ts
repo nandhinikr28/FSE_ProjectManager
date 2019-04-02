@@ -127,6 +127,7 @@ this.title = "Update";
 
   Delete(taskid : number)
   {
+    console.log("deleting task"+ taskid);
       this._TaskService.DeleteData(taskid).subscribe(i => this.msg = i);
   }
 

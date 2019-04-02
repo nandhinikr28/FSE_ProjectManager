@@ -262,7 +262,7 @@ export class AddTaskComponent implements OnInit {
     //if(item.Parent_Task != ""){
       //this.item.Parent_Task = this.item.Parent_task_id;
     //}
-    
+    console.log("Inserting data");
     if (item.Project_Name != "") {
       if (this.title == "Add") {
         console.log('INSERT IN');

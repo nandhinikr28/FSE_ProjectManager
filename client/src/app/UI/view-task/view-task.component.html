@@ -45,7 +45,7 @@
                           <td>  {{ task.Start_date }} </td>
                           <td>  {{ task.End_date }} </td>
                           <td><button type="button" class="btn btn-primary" (click)=Update(task)>Edit Task</button> </td>
-        <td><button type="button" class="btn btn-primary" [disabled]="task.Deleted"  (click)=Delete(task.TaskId)>End Task</button> </td>
+        <td><button type="button" class="btn btn-primary" [disabled]="task.Deleted"  (click)=Delete(task._id)>End Task</button> </td>
               </tr>
           </table>
       </div>

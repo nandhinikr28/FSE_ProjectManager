@@ -23,7 +23,7 @@ const ProjectSchema = mongoose.Schema({
         type: String,
         required: false
     },
-    TaskID:[{
+    Task_IDS:[{
         //ref: 'TaskTable',
         type: mongoose.Schema.ObjectId, ref: 'Task',
         //type: String

@@ -98,7 +98,7 @@ options;
 //USERS 
 GetUser(_id) //: Observable<User>
 {
-  console.log(_id);
+  console.log("user id"+_id);
     return this._http.get("http://localhost:3000/api/users" +"/"+ _id)
     .pipe(map((response : Response)=><User> response.json()));
 }

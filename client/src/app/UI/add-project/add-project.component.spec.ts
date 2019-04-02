@@ -21,6 +21,7 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 //import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AddUserComponent } from '../add-user/add-user.component';
 import {AddTaskComponent} from '../add-task/add-task.component';
+import { inject } from '@angular/core/testing';
 
 describe('AddProjectComponent', () => {
   let component: AddProjectComponent;
@@ -28,7 +29,7 @@ describe('AddProjectComponent', () => {
 
   class TestAddprojectcomponent{
     projects: Project[] = [{Project_Name: 'tre',
-  Priority: '8',
+  Priority: 8,
 ManagerName: 'aa'}];
   }
 
@@ -51,8 +52,8 @@ ManagerName: 'aa'}];
   //it('should create', () => {
     //expect(component).toBeTruthy();
   //});
-  it('should have a defined component', () => {
-    expect(component).toBeDefined();
-  });
+  //it('should have a defined component', () => {
+  //  expect(component).toBeDefined();
+  //});
 
 });

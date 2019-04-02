@@ -148,6 +148,7 @@ console.log(searchFilter.toLowerCase());
 
   Update(item: any) {
 
+    console.log("update user");
     this._UserService.GetUser(item._id)
         .subscribe((data: User) => { this.item = data });
     this.title = "Update";
